@@ -340,8 +340,8 @@ class LoginResource(Resource):
         Resource (Type[Resource]): FlaskRESTful Resource
     """
 
-    def get(self):
-        """ASWP-API Login GET
+    def post(self):
+        """ASWP-API Login POST
 
         Returns:
             type[Response]: Flask JSON Response with JWT access token

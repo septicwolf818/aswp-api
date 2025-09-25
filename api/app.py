@@ -1,6 +1,7 @@
 from flask import Flask
 from sqlalchemy_utils.functions import database_exists
 from flask_restful import Api
+from flask_cors import CORS
 import logging
 from database import db
 from config import config
@@ -9,6 +10,17 @@ from models import Center, Animal, Specie, Authenticator
 
 # Create app
 app = Flask(config["GENERAL"]["APP_NAME"])
+
+# Configure CORS from config.ini
+cors_origins = config["CORS"]["ORIGINS"].split(",") if config["CORS"]["ORIGINS"] != "*" else "*"
+cors_supports_credentials = config["CORS"]["SUPPORTS_CREDENTIALS"].lower() == "true"
+
+CORS(app, 
+     origins=cors_origins,
+     supports_credentials=cors_supports_credentials,
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+     allow_headers=["Content-Type", "Authorization"])
+
 # Configure logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)

@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ASWP - Test Page</title>
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#60a5fa; --muted:#94a3b8; --text:#e6eef8;
+      --success:#10b981; --danger:#ef4444;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background:linear-gradient(180deg,#071028 0%, #081226 100%); color:var(--text);
+      padding:24px;
+    }
+    .container{max-width:1100px;margin:0 auto}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    h1{font-size:20px;margin:0}
+    .grid{display:grid;gap:12px}
+    .cols-3{grid-template-columns:1fr 1fr 1fr}
+    .cols-2{grid-template-columns:1fr 1fr}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); padding:14px; border-radius:8px;min-width:0;overflow:hidden}
+    label{display:block;font-size:12px;margin-bottom:6px;color:var(--muted)}
+    input, select, textarea{width:100%;padding:8px;border-radius:6px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--text)}
+    button{padding:8px 12px;border-radius:8px;border:none;background:var(--accent);color:#04233b;cursor:pointer;font-weight:600}
+    button.secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text)}
+    .row{display:flex;gap:8px}
+    .small{font-size:12px;padding:6px 10px;border-radius:6px}
+    pre{background:#021224;padding:12px;border-radius:8px;overflow:auto;color:#dbeafe;font-size:13px}
+    #output{
+      background:#021224;
+      padding:12px;
+      border-radius:8px;
+      color:#dbeafe;
+      font-size:13px;
+      white-space:pre-wrap;
+      word-wrap:break-word;
+      overflow-wrap:break-word;
+      word-break:break-word;
+      max-width:100%;
+      min-width:0;
+      overflow:auto;
+      max-height:400px;
+      font-family:monospace;
+      line-height:1.4;
+      box-sizing:border-box;
+    }
+    .muted{color:var(--muted);font-size:12px}
+    .token {font-family: monospace;background: rgba(255,255,255,0.02);padding: 6px;border-radius: 6px;word-break: break-all;overflow-x: auto;white-space: pre-wrap;max-width: 100%;}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
+    .success{color:var(--success)} .danger{color:var(--danger)}
+    footer{margin-top:18px;color:var(--muted);font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>ASWP - Test Page</h1>
+      <div>
+        <span class="muted">API base:</span>
+        <input id="apiBase" value="http://127.0.0.1:5000" style="width:220px;margin-left:8px" />
+      </div>
+    </header>
+
+    <section class="grid cols-3" style="margin-bottom:12px">
+      <div class="card">
+        <h3>Login / Register</h3>
+        <label>Login</label>
+        <input id="loginLogin" placeholder="login" />
+        <label>Password</label>
+        <input id="loginPassword" placeholder="password" type="password" />
+        <div style="margin-top:8px" class="row">
+          <button id="btnLogin">Login</button>
+          <button id="btnLogout" class="secondary">Logout</button>
+        </div>
+        <hr style="margin:10px 0;border:none;border-top:1px solid rgba(255,255,255,0.03)" />
+        <label>Register New Center</label>
+        <input id="regLogin" placeholder="new login" />
+        <input id="regPassword" placeholder="new password" type="password" />
+        <input id="regName" placeholder="center name" />
+        <input id="regAddress" placeholder="center address" />
+        <div style="margin-top:8px" class="row">
+          <button id="btnRegister">Register</button>
+        </div>
+        <p class="muted" style="margin-top:8px">Stored token:</p>
+        <div id="tokenBox" class="token">— none —</div>
+      </div>
+
+      <div class="card">
+        <h3>Quick List Actions</h3>
+        <div class="actions" style="margin:8px 0">
+          <button id="btnAnimals">Load Animals</button>
+          <button id="btnSpecies">Load Species</button>
+          <button id="btnCenters">Load Centers</button>
+        </div>
+        <div style="margin-top:6px">
+          <label>Get Animal by ID</label>
+          <div class="row">
+            <input id="animalId" placeholder="1" />
+            <button id="btnGetAnimal" class="small">Get</button>
+          </div>
+        </div>
+        <div style="margin-top:6px">
+          <label>Get Specie by ID</label>
+          <div class="row">
+            <input id="specieId" placeholder="1" />
+            <button id="btnGetSpecie" class="small">Get</button>
+          </div>
+        </div>
+        <div style="margin-top:6px">
+          <label>Get Center by ID</label>
+          <div class="row">
+            <input id="centerId" placeholder="1" />
+            <button id="btnGetCenter" class="small">Get</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Add / Update / Delete</h3>
+        <label>New Animal</label>
+        <input id="newName" placeholder="name" />
+        <textarea id="newDescription" placeholder="description" style="height:54px"></textarea>
+        <div class="row" style="margin-top:6px">
+          <input id="newSpecie" placeholder="specie id" />
+          <input id="newAge" placeholder="age" />
+          <input id="newPrice" placeholder="price" />
+        </div>
+        <div style="margin-top:8px" class="row">
+          <button id="btnAddAnimal">Add Animal (auth)</button>
+        </div>
+
+        <hr style="margin:10px 0;border:none;border-top:1px solid rgba(255,255,255,0.03)" />
+
+        <label>New Specie</label>
+        <input id="spName" placeholder="specie name" />
+        <input id="spPrice" placeholder="price" />
+        <textarea id="spDesc" placeholder="description" style="height:54px"></textarea>
+        <div style="margin-top:8px" class="row">
+          <button id="btnAddSpecie">Add Specie (auth)</button>
+        </div>
+
+        <hr style="margin:10px 0;border:none;border-top:1px solid rgba(255,255,255,0.03)" />
+
+        <label>Update / Delete Animal</label>
+        <div class="row" style="margin-top:6px">
+          <input id="updId" placeholder="id" />
+          <input id="updName" placeholder="new name" />
+        </div>
+        <textarea id="updDescription" placeholder="new description" style="height:54px"></textarea>
+        <div class="row" style="margin-top:6px">
+          <input id="updSpecie" placeholder="new specie id" />
+          <input id="updAge" placeholder="new age" />
+          <input id="updPrice" placeholder="new price" />
+        </div>
+        <div style="margin-top:8px" class="row">
+          <button id="btnUpdateAnimal">Update Animal (auth)</button>
+          <button id="btnDeleteAnimal" class="secondary">Delete Animal (auth)</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid cols-2" style="gap:16px">
+      <div class="card">
+        <h3>Responses / JSON Viewer</h3>
+        <pre id="output">Use the buttons to call the API — JSON responses will show here.</pre>
+      </div>
+
+      <div class="card">
+        <h3>Helpful Hints</h3>
+        <ul class="muted">
+          <li>Protected endpoints (POST, PUT, DELETE) require a Bearer JWT saved after login.</li>
+          <li>Change the <strong>API base</strong> at top if needed.</li>
+          <li>Use /register to create a new center, then login to get a JWT token.</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>
+      <div class="muted">This is a simple testing UI — adjust fields and extend as needed.</div>
+    </footer>
+  </div>
+
+<script>
+(function() {
+  const $ = id => document.getElementById(id);
+  const apiBaseInput = $('apiBase');
+
+  function apiBase() {
+    return apiBaseInput.value.replace(/\/+$/, '');
+  }
+
+  // Token helpers
+  function saveToken(t) { localStorage.setItem('ac_token', t); updateTokenBox(); }
+  function loadToken() { return localStorage.getItem('ac_token') || ''; }
+  function clearToken() { localStorage.removeItem('ac_token'); updateTokenBox(); }
+  function updateTokenBox() {
+    const t = loadToken();
+    $('tokenBox').textContent = t ? t : '— none —';
+    $('tokenBox').className = 'token';
+  }
+  updateTokenBox();
+
+  async function showOutput(obj) {
+    $('output').textContent = JSON.stringify(obj, null, 2);
+  }
+
+  async function fetchJson(path, options = {}) {
+    const url = apiBase() + path;
+    options.headers = options.headers || {};
+    if (!options.headers['Content-Type']) {
+      options.headers['Content-Type'] = 'application/json';
+    }
+    if (options.auth !== false) {
+      const t = loadToken();
+      if (t) options.headers['Authorization'] = 'Bearer ' + t;
+    }
+    
+    if (options.method && ['GET', 'HEAD'].includes(options.method.toUpperCase())) {
+      delete options.body;
+    } else {
+      if (options.body === undefined) options.body = {};
+      if (typeof options.body === 'object') options.body = JSON.stringify(options.body);
+    }
+    
+    try {
+      const res = await fetch(url, options);
+      const text = await res.text();
+      try { return { status: res.status, ok: res.ok, data: JSON.parse(text) }; }
+      catch (e) { return { status: res.status, ok: res.ok, data: text }; }
+    } catch (err) {
+      return { status: 0, ok: false, error: String(err) };
+    }
+  }
+
+  // LOGIN (POST with body)
+  async function login() {
+    const login = $('loginLogin').value.trim();
+    const password = $('loginPassword').value;
+    if (!login || !password) return alert('Enter login and password');
+    const r = await fetchJson('/login', { method: 'POST', body: { login, password }, auth: false });
+    await showOutput(r);
+    if (r.data && (r.data.access_token)) {
+      saveToken(r.data.access_token);
+      alert('Login successful — token saved.');
+    } else if (r.ok) {
+      alert('Login request succeeded but no token found in response.');
+    } else {
+      alert('Login failed — see response.');
+    }
+  }
+
+  // REGISTER (POST with body)
+  async function register() {
+    const login = $('regLogin').value.trim();
+    const password = $('regPassword').value;
+    const name = $('regName').value.trim();
+    const address = $('regAddress').value.trim();
+    if (!login || !password || !name || !address) return alert('All registration fields required');
+    const body = { login, password, name, address };
+    const r = await fetchJson('/register', { method: 'POST', body, auth: false });
+    await showOutput(r);
+    if (r.ok) {
+      alert('Registration successful — please login.');
+    } else {
+      alert('Registration failed — see response.');
+    }
+  }
+
+  // GET requests - no body needed for standards compliance
+  async function loadAnimals() { 
+    const r = await fetchJson('/animals', { method: 'GET', auth: false }); 
+    await showOutput(r); 
+  }
+  async function loadSpecies() { 
+    const r = await fetchJson('/species', { method: 'GET', auth: false }); 
+    await showOutput(r); 
+  }
+  async function loadCenters() { 
+    const r = await fetchJson('/centers', { method: 'GET', auth: false }); 
+    await showOutput(r); 
+  }
+
+  async function getAnimalById() {
+    const id = $('animalId').value.trim();
+    if (!id) return alert('Enter animal id');
+    const r = await fetchJson('/animals/' + encodeURIComponent(id), { method: 'GET', auth: false });
+    await showOutput(r);
+  }
+
+  async function getSpecieById() {
+    const id = $('specieId').value.trim();
+    if (!id) return alert('Enter specie id');
+    const r = await fetchJson('/species/' + encodeURIComponent(id), { method: 'GET', auth: false });
+    await showOutput(r);
+  }
+
+  async function getCenterById() {
+    const id = $('centerId').value.trim();
+    if (!id) return alert('Enter center id');
+    const r = await fetchJson('/centers/' + encodeURIComponent(id), { method: 'GET', auth: false });
+    await showOutput(r);
+  }
+
+  // POST-like
+  async function addAnimal() {
+    const name = $('newName').value.trim();
+    const description = $('newDescription').value.trim();
+    const specie = parseInt($('newSpecie').value, 10);
+    const age = parseInt($('newAge').value, 10);
+    const price = parseFloat($('newPrice').value);
+    if (!name || isNaN(specie) || isNaN(age)) return alert('Name, specie, and age required');
+    const body = { 
+      name, 
+      description: description || null, 
+      specie, 
+      age, 
+      price: isNaN(price) ? null : price 
+    };
+    const r = await fetchJson('/animals', { method: 'POST', body, auth: true });
+    await showOutput(r);
+  }
+
+  async function addSpecie() {
+    const name = $('spName').value.trim();
+    const price = parseFloat($('spPrice').value);
+    const description = $('spDesc').value.trim();
+    if (!name || !description || isNaN(price)) return alert('Name, description, and price required');
+    const body = { name, price, description };
+    const r = await fetchJson('/species', { method: 'POST', body, auth: true });
+    await showOutput(r);
+  }
+
+  async function updateAnimal() {
+    const id = $('updId').value.trim();
+    const name = $('updName').value.trim();
+    const description = $('updDescription').value.trim();
+    const specie = parseInt($('updSpecie').value, 10);
+    const age = parseInt($('updAge').value, 10);
+    const price = parseFloat($('updPrice').value);
+    if (!id) return alert('Animal ID required');
+    const body = {};
+    if (name) body.name = name;
+    if (description) body.description = description;
+    if (!isNaN(specie)) body.specie = specie;
+    if (!isNaN(age)) body.age = age;
+    if (!isNaN(price)) body.price = price;
+    if (Object.keys(body).length === 0) return alert('At least one field to update required');
+    const r = await fetchJson('/animals/' + encodeURIComponent(id), { method: 'PUT', body, auth: true });
+    await showOutput(r);
+  }
+
+  async function deleteAnimal() {
+    const id = $('updId').value.trim();
+    if (!id) return alert('ID required');
+    if (!confirm('Delete animal id ' + id + '?')) return;
+    const r = await fetchJson('/animals/' + encodeURIComponent(id), { method: 'DELETE', auth: true });
+    await showOutput(r);
+  }
+
+  // Attach events
+  $('btnLogin').addEventListener('click', login);
+  $('btnLogout').addEventListener('click', () => { clearToken(); alert('Logged out. Token cleared.'); });
+  $('btnRegister').addEventListener('click', register);
+  $('btnAnimals').addEventListener('click', loadAnimals);
+  $('btnSpecies').addEventListener('click', loadSpecies);
+  $('btnCenters').addEventListener('click', loadCenters);
+  $('btnGetAnimal').addEventListener('click', getAnimalById);
+  $('btnGetSpecie').addEventListener('click', getSpecieById);
+  $('btnGetCenter').addEventListener('click', getCenterById);
+  $('btnAddAnimal').addEventListener('click', addAnimal);
+  $('btnAddSpecie').addEventListener('click', addSpecie);
+  $('btnUpdateAnimal').addEventListener('click', updateAnimal);
+  $('btnDeleteAnimal').addEventListener('click', deleteAnimal);
+
+  // Enter to login
+  ['loginLogin', 'loginPassword'].forEach(id => {
+    $(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') login();
+    });
+  });
+
+  // Enter to register
+  ['regLogin', 'regPassword', 'regName', 'regAddress'].forEach(id => {
+    $(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') register();
+    });
+  });
+
+  // Enter for quick actions
+  ['animalId', 'specieId', 'centerId'].forEach(id => {
+    $(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        if (id === 'animalId') getAnimalById();
+        else if (id === 'specieId') getSpecieById();
+        else if (id === 'centerId') getCenterById();
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
